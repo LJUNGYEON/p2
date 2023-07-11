@@ -6,11 +6,20 @@ import data from './data'
 import bg from './img/bg01.jpeg';
 import { Routes, Route, Link,useNavigate,Outlet, Navigate} from 'react-router-dom';
 import DetailInfo from './routes/detail';
+import axios from 'axios';
+import { styled } from 'styled-components';
 
-
+let Loading = styled.div`
+  background:black;
+  color:white;
+  padding:10px;
+`
 function App() {
   let [shoes,setShoes]=useState(data);
+  let [btnCnt, setBtnCnt] = useState(0);
   let navigate = useNavigate();{/* 페이지 이동함수*/} 
+  let [loadBtn, setLoad] = useState(false);
+  let [cntOver, setCntOver] = useState(true);
   return (
     <div className="App">
       
@@ -53,6 +62,49 @@ function App() {
                 })
                 }
               </Row>
+              {cntOver ==false?<div>더이상 데이터가 없습니다.</div>:null}
+              <button onClick={()=>{
+               setLoad(true);
+                btnCnt===0?
+                  axios.get('https://codingapple1.github.io/shop/data2.json')
+                  .then((result)=>{
+                    let addshoes = [...shoes,...result.data];
+                    setShoes(addshoes);
+                    setBtnCnt(btnCnt+1)
+                    setCntOver(true);
+                    setLoad(false);
+                  }).catch(()=>{
+                    console.log("실패")
+                  })
+                :
+                btnCnt===1?
+                axios.get('https://codingapple1.github.io/shop/data3.json')
+                .then((result)=>{
+                  let addshoes = [...shoes,...result.data];
+                  setShoes(addshoes);
+                  setBtnCnt(btnCnt+1);
+                  setCntOver(true);
+                  setLoad(false);
+                }).catch(()=>{
+                  console.log("실패")
+                }): setCntOver(false)
+                
+                
+
+              {/* 
+                axios.post('safdfas',{name:"kim"});
+                
+                Promise.all([axios.get('/url1'),axios.get('/url2')])
+                .then(()=>{
+
+                });
+                fetch('')
+                .then(결과 => 결과.json())
+                .then(data=>{})
+              */}                
+              }}>더보기</button>
+              {loadBtn ==true?<div>로딩중...</div>:null}
+              
             </Container>
           </>
 
@@ -111,3 +163,4 @@ function EventPage (){
   )
 }
 export default App;
+
