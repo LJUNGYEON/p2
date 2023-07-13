@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './App.css';
 import {Button,Navbar,Container, Nav, Row, Col} from 'react-bootstrap';
-
+import Cart from './routes/Cart.js';
 import data from './data'
 import bg from './img/bg01.jpeg';
 import { Routes, Route, Link,useNavigate,Outlet, Navigate} from 'react-router-dom';
@@ -20,6 +20,9 @@ function App() {
   let navigate = useNavigate();{/* 페이지 이동함수*/} 
   let [loadBtn, setLoad] = useState(false);
   let [cntOver, setCntOver] = useState(true);
+
+
+
   return (
     <div className="App">
       
@@ -112,7 +115,7 @@ function App() {
         
         <Route path="/detail/:id" element={<DetailInfo shoes={shoes}></DetailInfo>}></Route>
         
-        
+        <Route path="/cart" element={<Cart/>}></Route>
         <Route path="/about" element={<About/>}>
           <Route path="member" element={<div>멤버</div>}></Route>
           <Route path="location" element={<About/>}></Route>

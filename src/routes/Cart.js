@@ -1,36 +1,43 @@
 import {Table} from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux';
+
+import {changeName} from '../store.js'
 
 function Cart(){
+let a = useSelector((state)=>{
+  return state; 
+})
+
+let dispatch = useDispatch();
+console.log(a);
+
 return(
     <div>
-
+{a.user}의 장바구니
      <Table striped bordered hover>
           <thead>
             <tr>
               <th>#</th>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Username</th>
+              <th>상품명</th>
+              <th>수량</th>
+              <th>상태 변경</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <td>2</td>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td colSpan={2}>Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
+            {
+               a.cart.map((cart,i)=>{
+                return(
+                  <tr>
+                    <td>{i}</td>
+                    <td>{cart.name}</td>
+                    <td>{cart.count}</td>
+                  <td>  <botton onClick={()=>{
+                    dispatch(changeName())  
+                  }} >+</botton></td>
+                  </tr>
+                )
+               }) 
+            }
           </tbody>
         </Table>
     </div>
