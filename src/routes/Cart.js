@@ -1,7 +1,8 @@
 import {Table} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 
-import {changeName} from '../store.js'
+import {chgCount} from '../store/cartSlice.js'
+import {changeName, plusAge, plusAge2} from '../store/userSlice.js'
 
 function Cart(){
 let a = useSelector((state)=>{
@@ -13,7 +14,16 @@ console.log(a);
 
 return(
     <div>
-{a.user}의 장바구니
+{a.user.name}의 장바구니
+{a.user.age}살
+<button onClick={()=>{
+dispatch(plusAge())
+
+}}>+++ </button>
+<button onClick={()=>{
+dispatch(plusAge2(10))
+
+}}>10+ </button>
      <Table striped bordered hover>
           <thead>
             <tr>
@@ -32,7 +42,8 @@ return(
                     <td>{cart.name}</td>
                     <td>{cart.count}</td>
                   <td>  <botton onClick={()=>{
-                    dispatch(changeName())  
+                      let id = cart.id
+                      dispatch(chgCount())
                   }} >+</botton></td>
                   </tr>
                 )
