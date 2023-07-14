@@ -2,7 +2,7 @@ import {Table} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux';
 
 import {chgCount} from '../store/cartSlice.js'
-import {changeName, plusAge, plusAge2} from '../store/userSlice.js'
+import { plusAge, plusAge2} from '../store/userSlice.js'
 
 function Cart(){
 let a = useSelector((state)=>{
