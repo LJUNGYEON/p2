@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from 'styled-components';
 import {Nav} from 'react-bootstrap';
-import { cleanup } from "@testing-library/react";
+import { useDispatch, useSelector } from 'react-redux';
+
+import {addProduct} from '../store/cartSlice.js'
 
 let YellowBtn = styled.button`
   background:${props=>props.color};
@@ -16,23 +18,18 @@ let RedDiv = styled.div`
   color:red;
 `
 function DetailInfo(props){
+  let dispatch = useDispatch();
 
   let [count,setCount] = useState(0)
   let {id} = useParams();
-  console.log(
-    props.shoes
-  );
+  
   let shoes_tmp = props.shoes.find( function(x){
     return x.id == id
   } );
-  console.log(
-    shoes_tmp 
-  );
+
 
   let [Timer, setTimer] = useState(true);
   useEffect(()=>{
-    console.log("안녕")
-
     let a = setTimeout(()=>{
       setTimer(false);
     },2000);
@@ -46,7 +43,7 @@ function DetailInfo(props){
   let [inputVal, setInputVal] = useState('');
   let [alert,setAlert]=useState(false);
   useEffect(()=>{
-console.log(inputVal);
+
     if(isNaN(inputVal)){
       setAlert(true);
     }else{
@@ -88,7 +85,11 @@ return(
       <h4 className="pt-5">{shoes_tmp.title}</h4>
       <p>{shoes_tmp.content}</p>
       <p>{shoes_tmp.price}</p>
-      <button className="btn btn-danger">주문하기</button> 
+      <button className="btn btn-danger" onClick={()=>{
+         console.log("=============detail===============")
+          console.log(shoes_tmp)
+        dispatch(addProduct(shoes_tmp))
+      }}>주문하기</button> 
     </div>
   </div>
 

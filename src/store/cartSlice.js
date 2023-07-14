@@ -7,20 +7,25 @@ let cart = createSlice({
         {id : 2, name : 'Grey Yordan', count : 1}
       ],
       reducers:{
-        chgCount(state){
+        chgCount(state, action){
             console.log(state);
-            let index;
-           state.map((st , i)=>{
-            console.log( st[i]);
-            
-           })
-           console.log("index:"+index);
+            const product = state.findIndex((item) => {return item.id === action.payload });
+            state[product].count++;
+        },
+        addProduct(state,action){
+            state.push(action.payload);
+            state.map((a,i)=>{
+                console.log(i)
 
+                console.log(a[i])
+
+            })
+            
         }
       }
 
 })
 
-export let {chgCount} = cart.actions
+export let {chgCount, addProduct} = cart.actions
 
 export default cart;

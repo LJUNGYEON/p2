@@ -42,8 +42,10 @@ dispatch(plusAge2(10))
                     <td>{cart.name}</td>
                     <td>{cart.count}</td>
                   <td>  <botton onClick={()=>{
-                      let id = cart.id
-                      dispatch(chgCount())
+
+                      const id = cart.id
+                      console.log("Cart.js id:"+id);
+                      dispatch(chgCount(id))
                   }} >+</botton></td>
                   </tr>
                 )
