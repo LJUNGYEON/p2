@@ -3,17 +3,36 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import {chgCount} from '../store/cartSlice.js'
 import { plusAge, plusAge2} from '../store/userSlice.js'
+import { useState, memo,useMemo } from 'react';
+
+function 함수(){
+  return 1
+}
+
+{/*props 가 변할 때만 재렌더링 해줌 */}
+let Child = memo( function(){
+  console.log('재렌더링됨')
+  return <div>자식임</div>
+})
 
 function Cart(){
+  let result = useMemo(()=>{ return 함수() }, [])
+
+
 let a = useSelector((state)=>{
   return state; 
 })
 
 let dispatch = useDispatch();
 console.log(a);
-
+let [count, setCount] = useState(0)
 return(
+  
     <div>
+      <Child></Child>
+      <button onClick={()=>{
+        setCount(count++)
+      }}></button>
 {a.user.name}의 장바구니
 {a.user.age}살
 <button onClick={()=>{

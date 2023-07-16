@@ -1,13 +1,17 @@
-import { useState } from 'react';
+import { lazy, Suspense,useState , useEffect} from 'react';
 import './App.css';
 import {Button,Navbar,Container, Nav, Row, Col} from 'react-bootstrap';
-import Cart from './routes/Cart.js';
+
 import data from './data'
+
 import bg from './img/bg01.jpeg';
 import { Routes, Route, Link,useNavigate,Outlet, Navigate} from 'react-router-dom';
-import DetailInfo from './routes/detail';
+
 import axios from 'axios';
 import { styled } from 'styled-components';
+import {useQuery } from '@tanstack/react-query'
+const DetailInfo = lazy( () => import('./routes/detail') )
+const Cart = lazy( () => import('./routes/Cart.js') )
 
 let Loading = styled.div`
   background:black;
@@ -15,6 +19,13 @@ let Loading = styled.div`
   padding:10px;
 `
 function App() {
+
+  let obj = {name:'kim'};
+  localStorage.setItem('data',JSON.stringify(obj))
+  
+  let getObj = localStorage.getItem('data')
+
+
   let [shoes,setShoes]=useState(data);
   let [btnCnt, setBtnCnt] = useState(0);
   let navigate = useNavigate();{/* 페이지 이동함수*/} 
@@ -22,6 +33,24 @@ function App() {
   let [cntOver, setCntOver] = useState(true);
 
 
+  useEffect(()=>{
+    localStorage.setItem('watched', JSON.stringify( [1] ))
+  },[]) 
+
+   
+{/* 
+    1.성공, 실패 ,로딩중이 쉽게 파악가능
+    result.data => 성공시 데이터
+    result.isLoading =>로딩중일때 true
+    result.error => 실패일때 true
+  */}
+  let result = useQuery('작명', ()=>
+  axios.get('https://codingapple1.github.io/userdata.json')
+  .then((a)=>{ return a.data }),
+  
+  
+  {staleTime:2000}
+)
 
   return (
     <div className="App">
@@ -32,6 +61,12 @@ function App() {
         <Nav className="me-auto">
           <Nav.Link onClick={()=>{navigate('/')}}>HOME</Nav.Link>
           <Nav.Link onClick={() =>{navigate('/detail')} }>Detail</Nav.Link>
+        </Nav>
+        <Nav className="ms-auto">
+          
+        { result.isLoading && '로딩중' }
+      { result.error && '에러남' }
+      { result.data && result.data.name }
         </Nav>
         </Container>
       </Navbar>
@@ -51,6 +86,7 @@ function App() {
         setShoes(copy);
 
       }}>정렬</button>
+      <Suspense fallback={ <div>로딩중임</div> }>
       <Routes>
         <Route path="/" element={
           <>
@@ -128,7 +164,7 @@ function App() {
         <Route path="*" element={<div> 없는 페이지 입니다.</div>}></Route>
 
       </Routes>
-     
+      </Suspense>
     </div>
   );
 }

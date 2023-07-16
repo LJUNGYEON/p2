@@ -18,10 +18,14 @@ let RedDiv = styled.div`
   color:red;
 `
 function DetailInfo(props){
+  let cartItem = useSelector((state)=>{return state});
+  
+  console.log(cartItem)
   let dispatch = useDispatch();
 
   let [count,setCount] = useState(0)
   let {id} = useParams();
+  
   
   let shoes_tmp = props.shoes.find( function(x){
     return x.id == id
@@ -51,6 +55,17 @@ function DetailInfo(props){
     }
   },[inputVal])
 
+  useEffect(()=>{
+    let 꺼낸거 = localStorage.getItem('watched')
+    꺼낸거 = JSON.parse(꺼낸거)
+    꺼낸거.push(id)
+  
+    //Set으로 바꿨다가 다시 array로 만들기
+    꺼낸거 = new Set(꺼낸거)
+    꺼낸거 = Array.from(꺼낸거)
+    localStorage.setItem('watched', JSON.stringify(꺼낸거))
+  }, [])
+  
   let [tab,setTab] = useState(0);
   
 return(

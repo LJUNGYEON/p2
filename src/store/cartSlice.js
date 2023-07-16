@@ -13,13 +13,10 @@ let cart = createSlice({
             state[product].count++;
         },
         addProduct(state,action){
-            state.push(action.payload);
-            state.map((a,i)=>{
-                console.log(i)
-
-                console.log(a[i])
-
-            })
+            const product = state.findIndex((item) => {return item.id === action.payload.id });
+            product > 0 ?  state[product].count++: state.push(action.payload)
+            
+           
             
         }
       }
